@@ -59,5 +59,59 @@ module.exports = counter;
 
 - Use the require() where you would like to include some functionality from another module.
 - You need to export what functionality you want from the module out to make it available via require().
-- In the count.js file we module.exports to return the counter variable, in other words we want to be able to utilize the counter variable which is the anonymous function so we export this variable.
+- In the count.js file we use module.exports to return the counter variable, in other words we want to be able to utilize the counter variable outside the modules.
 - We then create the variable counter in app.js which is requiring the count.js file, which in return is exporting the counter variable, which makes the counter variable's anonymous function available in the app.js file.
+
+ES6 syntactic sugar:
+- You can now interpolate javascript expression directly into a string by using the back-tick symbols instead of quotes, this enables you to interpolate javascript into the string by adding a ${<YOUR JAVASCRIPT EXPRESSION>}
+
+Another expample requiring modules:
+
+app.js
+
+var stuff = require('./stuff');
+
+console.log(stuff.counter(['sherry', 'phill', 'max', 'sheila']));
+console.log(stuff.adder(5, 6));
+console.log(stuff.adder(stuff.pi, 5));
+
+stuff.js
+
+var counter = function(arr){
+    return 'There are ' + arr.length + ' elements in this array';
+};
+
+var adder = function(a,b){
+    return `The sum of these two numbers is ${a + b}`;
+};
+
+var pi = 3.142;
+
+module.exports.counter = counter;
+module.exports.adder = adder;
+module.exports.pi = pi;
+
+- In this example we have the module stuff.js, which has three variables that we want to export to be available outside the module.
+- We export the variables by adding them as key-values to the module.exports object.
+- In the app.js file we are requiring the stuff.js module and storing that in the variable stuff (is is actually module.exports).
+- So when we are using the variables available to us by module.exports we have to reference the module.exports object as stuff. In other words, if we wanted to use the variable pi, we would have to reference it as stuff.pi
+
+You can also use the object literal notation with module.exports, example:
+
+stuff.js
+
+var counter = function(arr){
+    return 'There are ' + arr.length + ' elements in this array';
+};
+
+var adder = function(a,b){
+    return `The sum of these two numbers is ${a + b}`;
+};
+
+var pi = 3.142;
+
+module.exports = {
+    counter :  counter,
+    adder   :  adder,
+    pi      :  pi
+};
