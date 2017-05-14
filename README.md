@@ -17,4 +17,20 @@ var sayBye = function(){
 
 sayBye();
 
-Note: that in this example we are creating the variable sayBye and storing an anonymous function that logs the string bye when invoked. You will notice that to invoke this function we call sayBye with parenthesis 
+output => bye
+
+Note: that in this example we are creating the variable sayBye and storing an anonymous function that logs the string bye when invoked. You will notice that to invoke this function we call sayBye with parenthesis.
+
+Another example of a common pattern in node.js with a function expression:
+
+function callFunction(fun){
+    fun();
+}
+
+var sayBye = function(){
+    console.log('bye');
+};
+
+callFunction(sayBye);
+
+output => bye
