@@ -8,3 +8,13 @@ Some examples of what is available with the global object are:
 Node can tell us where we are or what file we are in with these helpful methods from the global object.
 - __dirname
 - __filename
+
+A common pattern that we see often in node.js is the function expression, example:
+
+var sayBye = function(){
+    console.log('bye');
+};
+
+sayBye();
+
+Note: that in this example we are creating the variable sayBye and storing an anonymous function that logs the string bye when invoked. You will notice that to invoke this function we call sayBye with parenthesis 
