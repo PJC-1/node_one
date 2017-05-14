@@ -115,3 +115,11 @@ module.exports = {
     adder   :  adder,
     pi      :  pi
 };
+
+
+Built-in call modules that are available with node.js out of the box.
+example: events modules.
+
+- We use the require method similarly to how we imported a custom module. So to fetch a call module you would use this syntax:
+
+var events = require('events');
