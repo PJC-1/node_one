@@ -1,16 +1,3 @@
-// normal function statement
+var counter = require('./count');
 
-function sayHi(){
-    console.log('hi');
-}
-
-sayHi()
-
-
-// function expression
-
-var sayBye = function(){
-    console.log('bye');
-};
-
-sayBye();
+console.log(counter(['sherry', 'phill', 'max', 'sheila']));
