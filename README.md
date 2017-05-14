@@ -123,3 +123,44 @@ example: events modules.
 - We use the require method similarly to how we imported a custom module. So to fetch a call module you would use this syntax:
 
 var events = require('events');
+
+- One thing returned from the events modules is the EventEmitter class, used for creating custom events and we then can react to those events when they are emitted.
+- We can store a new EventEmitter object into the var myEmitter
+EventEmitter is a node class, which is a constructor. We can now wire up events to myEmitter. example:
+
+stuff.js
+
+var events = require('events');
+
+var myEmitter = new events.EventEmitter();
+
+- The .on method is from the node EventEmitter class and is used to bind event handlers to events by their string name.
+- Node.js is event based similar to that of jquery, so in node you usually bind functions to listen to events.
+- In this example we use the .on method and bind that to an event we have created named 'someEvent', when this 'someEvent' emits (occurs) we want it to do something and
+that is defined by the second argument as a callback function (in our example we are using an anonymous function).
+- We are allowed to pass through a parameter(s) into the callback function. In this example when the event happens, it fires the anonymous function which logs a message, example:
+
+stuff.js
+
+var events = require('events');
+
+var myEmitter = new events.EventEmitter();
+
+myEmitter.on('someEvent', function(mssg){
+    console.log(mssg);
+});
+
+- We use the method .emit to manually emit an event.
+- The .emit method allows you to manually invoke the event, which causes the callback registered to the event to be called.
+- In our example we are emitting our 'someEvent' event and the anonymous callback function is invoked, the second argument in the method is the mssg, so the string that passed into the callback to log the message.
+- The basic structure is the first argument is the event and all arguments after are parameters passed into the function. example:
+
+var events = require('events');
+
+var myEmitter = new events.EventEmitter();
+
+myEmitter.on('someEvent', function(mssg){
+    console.log(mssg);
+});
+
+myEmitter.emit('someEvent', 'the event was emitted');
