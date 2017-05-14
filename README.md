@@ -34,3 +34,30 @@ var sayBye = function(){
 callFunction(sayBye);
 
 output => bye
+
+Modules
+
+Modules are basically different (separate) javascript files. The general idea is to logically separate the code to make it easier to maintain and use.
+
+The require method is from the global object and is used to include (import) a module.
+example:
+
+app.js
+
+var counter = require('./count.js')
+
+console.log(counter(['sherry', 'phill', 'max', 'sheila']));
+
+
+count.js
+
+var counter = function(arr){
+    return 'There are ' + arr.length + ' elements in this array';
+};
+
+module.exports = counter;
+
+- Use the require() where you would like to include some functionality from another module.
+- You need to export what functionality you want from the module out to make it available via require().
+- In the count.js file we module.exports to return the counter variable, in other words we want to be able to utilize the counter variable which is the anonymous function so we export this variable.
+- We then create the variable counter in app.js which is requiring the count.js file, which in return is exporting the counter variable, which makes the counter variable's anonymous function available in the app.js file.
