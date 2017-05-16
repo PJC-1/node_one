@@ -167,12 +167,19 @@ myEmitter.emit('someEvent', 'the event was emitted');
 
 Another useful call module available through node.js is the "util" module.
 The util module is used to inherit from other object built into node.js.
-Example:
+example:
+
+public/app.js
+
 var events = require('events');
 
 var util = require('util');
 
-In this example we are going to create a new object constructor named Person, and every time a new person is created we will pass in a name and set a key of name to equal name. example:
+In this example we are going to create a new object constructor named Person, and every time a new person is created we will pass in a name and set a key of name to equal name.
+
+example:
+
+public/app.js
 
 var events = require('events');
 
@@ -184,6 +191,8 @@ var Person = function(name){
 
 Next, we will utilize the 'util' module that we required in order to inherit the EventEmitter(). In other words we want each person to inherit the EventEmitter() so that they can bind custom events to the person object. The .inherits() takes to arguments, the first being who/what will be doing the inheriting, in our example this will be Person. And the second argument will be what is being inherited, in our example the events.EventEmitter is what we want to be inherited. example:
 
+public/app.js
+
 var events = require('events');
 var util = require('util');
 
@@ -194,6 +203,8 @@ var Person = function(name){
 util.inherits(Person, events.EventEmitter);
 
 After Person inherits the ability to listen to custom events. We can now create some people. If we take a look at our constructor object, when we create a new person we pass in a string which will be their name. After create a few different people store those people in an array. example:
+
+public/app.js
 
 var events = require('events');
 var util = require('util');
@@ -212,6 +223,8 @@ var max = new Person('max');
 var people = [phill, sheery, sheila, max];
 
 Next, we can use the javascript forEach method to loop over the different items in the people array. We will execute an anonymous function that takes each person and binds the custom event 'speak' and defines a callback that will take in a message and log the person's name and the message passed into the callback. example:
+
+public/app.js
 
 var events = require('events');
 var util = require('util');
