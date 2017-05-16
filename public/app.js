@@ -19,6 +19,5 @@ people.forEach(function(person){
     });
 });
 
-// here we are manually emitting the custom event 'speak' and passing the message 'hello world' into the call back function which will log "phill said: hello world"
 phill.emit('speak', 'hello world');
 sherry.emit('speak', 'hi dude')
