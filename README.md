@@ -321,3 +321,15 @@ var readMe = fs.readFileSync('readMe.txt', 'utf8');
 fs.writeFileSync('writeMe.txt', readMe);
 
 running this code will create a file named "writeMe.txt" in the same directory as the app.js filled with the context of the "readMe.txt" file.
+
+The asynchronous versions to these methods are readFile() and writeFile(). The readFile() method has a third parameter that is required, it is a callback function for when it is finished reading the file. This callback function takes two arguments. The first being an error for if there is an error reading the file and the second being the data we retrived from reading the file. The writeFile() method still takes the same two parameters, the file you are going to write and the second being what you are going to write to the file. example:
+
+app.js
+
+var fs = require('fs');
+
+fs.readFile('readMe.txt', 'urf8', function(err,data){
+    fs.writeFile('writeMe.txt',data);
+})
+
+The above example will output the contents of the 'readMe.txt' file into a file named 'writeMe.txt' in the same directory. The only different is this is completely asynchronous, and would allow for other code to be ran while the operations of reading and writing the file were going on.
