@@ -285,3 +285,39 @@ phill said: hellow world
 sherry said: hi there
 sheila said: bow
 max said: wow
+
+
+fs module
+The fs module stands for File System and is a call module available from node.js. In out example we are using it to read and write files. Here is a link to the node.js documentation regarding the file system module:
+
+https://nodejs.org/api/fs.html
+
+Like we have before, to import the module we use the require method and store this in a variable, with the convention of naming the variable by the name of the module. example:
+
+app.js
+
+var fs = require('fs');
+
+Use the readFileSync() method to read a file that you specify as a parameter. This example will use the synchronous version of the method, which means that it will complete one operation to completion before moving on to the next. The readFileSync() method takes to parameters. The first being the file path to the file you want to read. And the second being the character encoding that will be used to convert the binary into the specified code. In this case we are using 'utf8'. example:
+
+app.js
+
+var fs = require('fs');
+
+var readMe = fs.readFileSync('readMe.txt', 'utf8');
+
+console.log(readMe);
+
+Running the module above will output the content of the 'readMe.txt' file.
+
+Next, we can use the writeFileSync method to write a file. This method also takes two arguments. The first is the name and path to the file you would like to write to. The second being what you would like to write to the file. In out example we will be creating a file named 'writeMe.txt' and we will write the content of the 'readMe.txt' file to the new file. example:
+
+app.js
+
+var fs = require('fs');
+
+var readMe = fs.readFileSync('readMe.txt', 'utf8');
+
+fs.writeFileSync('writeMe.txt', readMe);
+
+running this code will create a file named "writeMe.txt" in the same directory as the app.js filled with the context of the "readMe.txt" file.
