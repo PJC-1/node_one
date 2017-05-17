@@ -1,23 +1,10 @@
-var events = require('events');
-var  util = require('util');
+// fs module, reading and writing files
+var fs = require('fs');
 
-var Person = function(name){
-    this.name = name;
-}
+// use the readFileSync to read a file that you specify as an argument
+// this is the synchronous version to this method, which means that it will complete one operation to completion before moving on to the next.
+// the first argument is the full path to the file you want to read. Second is the character encoding, working with binary and to convert that binary into something else
+var readMe = fs.readFileSync('readMe.txt', 'utf8');
 
-util.inherits(Person, events.EventEmitter);
-
-var phill = new Person('phill');
-var sherry = new Person('sherry');
-var max = new Person('max');
-
-var people = [phill, sherry, max];
-
-people.forEach(function(person){
-    person.on('speak', function(mssg){
-        console.log(person.name + ' said: ' + mssg);
-    });
-});
-
-phill.emit('speak', 'hello world');
-sherry.emit('speak', 'hi dude')
+// remember when running this module in the terminal to be cd into the directory
+console.log(readMe);
