@@ -360,3 +360,15 @@ public/app.js
 var fs = require('fs');
 
 fs.rmdirSync('stuff');
+
+Now we can use the asynchronous versions of these methods. In out example we will use the mkdir(), which you will notice takes a callback function as the second parameter. Then after the stuff directory is created it will then read the readMe.txt file and once reading of the readMe.txt file is complete it will fire the callback function which will write the data we retrived from the readMe.txt file and write that to the writeMe.txt file inside the stuff folder. example:
+
+public/app.js
+
+var fs = require('fs');
+
+fs.mkdir('stuff', function(){
+    fs.readFile('readMe.txt', 'utf8', function(err,data){
+        fs.writeFile('stuff/writeMe.txt',data);
+    });
+});
