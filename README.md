@@ -344,3 +344,11 @@ fs.unlink('writeMe.txt');
 
 Running this module will delete the writeMe.txt file which is in the same directory as the app.js
 Remember that if you run this module and the file that you have passed into the method does not exist or is not the correct path, it will throw an error say no such file or directory.
+
+To create a directory you would use the file system call modules mkdirSync() method, this is the synchronous version of the method. This method takes a parameter, which is the name/path of the directory you would like to create. In our example we are creating a directory named 'stuff' inside the public directory.
+
+public/app.js
+
+var fs = require('fs');
+
+fs.mkdirSync('stuff');
