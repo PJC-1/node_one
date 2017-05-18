@@ -333,3 +333,14 @@ fs.readFile('readMe.txt', 'urf8', function(err,data){
 })
 
 The above example will output the contents of the 'readMe.txt' file into a file named 'writeMe.txt' in the same directory. The only different is this is completely asynchronous, and would allow for other code to be ran while the operations of reading and writing the file were going on.
+
+The file system call module also has many other built-in methods and functionality. One example is the unlink() method, which is used to delete files, it takes an argument that is a file name/path of what you want to delete. example:
+
+app.js
+
+var fs = require('fs');
+
+fs.unlink('writeMe.txt');
+
+Running this module will delete the writeMe.txt file which is in the same directory as the app.js
+Remember that if you run this module and the file that you have passed into the method does not exist or is not the correct path, it will throw an error say no such file or directory.
