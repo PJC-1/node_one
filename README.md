@@ -352,3 +352,11 @@ public/app.js
 var fs = require('fs');
 
 fs.mkdirSync('stuff');
+
+To delete a directory you can use the rmdirSync() method from the file system call module. This is the synchronous version of the method. It takes one argument, which is the directory name/path that you wish to delete. In our example we are deleting the directory stuff that is inside the public directory. exmaple:
+
+public/app.js
+
+var fs = require('fs');
+
+fs.rmdirSync('stuff');
