@@ -372,3 +372,16 @@ fs.mkdir('stuff', function(){
         fs.writeFile('stuff/writeMe.txt',data);
     });
 });
+
+
+Note: that if you attempt to delete a directory that is not empty by means of using the rmdir() method, it will throw an error: directory not empty. You can use the unlink() to first delete all files inside the directory and then in the callback function you can use the rmdir() to delete the empty directory. exmaple:
+public/app.js
+
+var fs = require(fs);
+
+fs.unlink('stuff/writeMe.txt', function(){
+    fs.rmdir('stuff');
+});
+
+
+Running this module will delete the writeMe.txt file and then delete the stuff directory.
