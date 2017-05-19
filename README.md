@@ -374,7 +374,7 @@ fs.mkdir('stuff', function(){
 });
 
 
-Note: that if you attempt to delete a directory that is not empty by means of using the rmdir() method, it will throw an error: directory not empty. You can use the unlink() to first delete all files inside the directory and then in the callback function you can use the rmdir() to delete the empty directory. exmaple:
+Note: that if you attempt to delete a directory that is not empty by means of using the rmdir() method, it will throw an error: directory not empty. You can use the unlink() to first delete all files inside the directory and then in the callback function you can use the rmdir() to delete the empty directory. example:
 public/app.js
 
 var fs = require(fs);
@@ -385,3 +385,21 @@ fs.unlink('stuff/writeMe.txt', function(){
 
 
 Running this module will delete the writeMe.txt file and then delete the stuff directory.
+
+
+Clients and Servers:
+
+When we go to a website, we are view this webpage in the browser like chrome. Sometimes we might do something, like ask for some data. In this case the client will make a request to the server and the server will send a response. Via a protocol, which is described as a set of communication rules, that two sides agree to use when communicating.
+
+So each computer/server can be identified by their own IP address, to make a request the client will have to connect to the server's IP address. They will open up what is known as a socket between the two computers, which is basically a channel that information can be sent. The information is structured via different protocols (ftp, http, etc). Depending on what the client is trying to communicate with the server, they will use a different protocol to structure the data/information.
+Examples of different protocols:
+- FTP => File Transfer protocol
+- HTTP => used for websites
+
+Once the information's structure has been decided, for example http, the information is sent down the socket through between the two computers through a protocol named TCP. So even though the data is structured in terms of a protocol, the data is sent from the server to the client through the TCP protocol.
+
+This splits up the data, into small little sections called packets. All of this functionality is built-in to our computers and nodejs gives us the ability to access this functionality. To open a connection bewteen two computers and send information between them. So if we run nodejs on the server, we can tell node what information we want to send to the client when they make a particular requests.
+
+Ports:
+- A program running on a computer can listen for requests sent to a particular port number
+- example: 172.24.86.76:3000, this is an IP address on port 3000.
