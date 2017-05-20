@@ -433,3 +433,17 @@ var http = require('http');
 var server = http.createServer(function(req,res){
     res.writeHead(200, {'Content-Type': 'text/plain'});
 });
+
+
+- We use the end() method which is the end of the response and send it to the browser.
+- We pass in the data we want to send back to the client. In our header we specified that our response is of the content-type "text/plain", so for our example we simply pass in a string to the end() method.
+- example:
+
+var http = require('http');
+
+var server = http.createServer(function(req, res){
+    res.writeHead(200, {"Content-Type": "text/plain"});
+    res.end("Hello World");
+});
+
+- At this point, if the client were to make a request it would not be able to work because we are not yet listening on a port.
