@@ -9,6 +9,8 @@ var http = require('http');
 // when ever we send a request to the server, then this function will fire.
 // the request object will contain details about the request that has been made. The response object is something we ban use to send a response back to the client.
 var server = http.createServer(function(req,res){
+      // you can use the url method from the request object to log the url that is making the request.
+      console.log('request was made: ' + req.url);
       // we use the writeHead() method to serve some information
       // the first parameter is the status code, then we pass in an object, the key is the content-type and the value is our choice of content-type, which in our exmaple is plain/text
       res.writeHead(200, {'Content-Type': 'text/plain'});
