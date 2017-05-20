@@ -403,3 +403,33 @@ This splits up the data, into small little sections called packets. All of this 
 Ports:
 - A program running on a computer can listen for requests sent to a particular port number
 - example: 172.24.86.76:3000, this is an IP address on port 3000.
+
+HTTP:
+- The http module allows nodejs to transfer data over the hyper text transfer protocol (HTTP).
+- example importing the http call module:
+app.js
+
+var http = require('http');
+
+- Then we create the server object, we can use a convention to store that server object into a variable.
+- We use the createServer() method. We pass in a function as a way to deal with the requests made by the client. This function takes in two parameters.
+- The first being the request object and the second is the response object.
+- Whenever we send a request to the server, then this function will fire.
+- The request object will contain details about the request that has been made. The response object is something we can use to send a response back to the client.
+- example:
+
+var http = require('http');
+
+var server = http.createServer(function(req,res){
+
+});
+
+- We use the writeHead() method to serve some information about the response.
+- The first parameter is the status code, then we pass in an object, where the key is content-type and the value of that key is the specific content-type for this response.
+- exmaple:
+
+var http = require('http');
+
+var server = http.createServer(function(req,res){
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+});
