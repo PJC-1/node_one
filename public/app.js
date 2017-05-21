@@ -3,10 +3,8 @@ var http = require('http');
 var server = http.createServer(function(req,res){
       // you can use the url method from the request object to log the url that is making the request.
       console.log('request was made: ' + req.url);
-      
+
       res.writeHead(200, {'Content-Type': 'text/plain'});
-      // we use the end() method which is the end of the response and send it to the browser.
-      // in the parenthesis we can send back some data. In our header we specified that we our reponse is going to be in plain/text, so it is just a string
       res.end('Hello World');
 });
 
