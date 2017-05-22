@@ -446,4 +446,36 @@ var server = http.createServer(function(req, res){
     res.end("Hello World");
 });
 
-- At this point, if the client were to make a request it would not be able to work because we are not yet listening on a port.
+- At this point, if the client were to make a request it would not be able to work because we are not yet listening on a port. So we need to make sure that we are listening to a particular port for requests.
+- We use the listen() method, which takes two arguments.
+- The first being the port number, in this example we are using port 3000.
+- The second argument being the ip address, we are using a local ip address (127.0.0.1)
+- It is a good idea to always log something after listening to a port, so you can get a confirmation that it is successfully listening to the specified port.
+- example:
+
+public/app.js
+
+var http = require('http');
+
+var server = http.createServer(function(req,res){
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end('Hello World');
+});
+
+server.listen(3000, '127.0.0.1');
+
+- One thing we can do is make use of the url method from the request object, in order to log the url that is making the request.
+- example:
+
+var http = require('http');
+
+var server = http.createServer(function(req,res){
+      console.log('request was make: ' + req.url);
+
+      res.writeHead(200, {'Content-Type': 'text/plain'});
+      res.end('Hello World');
+});
+
+server.listen(3000, '127.0.0.1');
+
+console.log('You are now listening on port 3000.');
