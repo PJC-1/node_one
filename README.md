@@ -464,7 +464,7 @@ var server = http.createServer(function(req,res){
 
 server.listen(3000, '127.0.0.1');
 
-- One thing we can do is make use of the url method from the request object, in order to log the url that is making the request.
+- One thing we can do is make use of the url property from the request object, in order to log the url that is making the request.
 - example:
 
 var http = require('http');
