@@ -498,3 +498,34 @@ Stream
 Streams in Node.js
 - The main idea is that Nodejs can make use of Streams to transfer data.
 - This can increase performance.
+
+
+Readable Streams
+- Writable streams: Allow node js to write data to a stream.
+- Readable streams: Allow node js to read data from a stream.
+- Duplex: Can read and write to a stream.
+
+To get started creating our own stream we need to require the File System module from node.js
+- example:
+
+var http = require('http');
+var fs = require('fs');
+
+
+- To create a read steam, we need to use a method from the file system module called createReadStream()
+- example:
+
+var http = require('http');
+var fs = require('fs');
+
+var myReadStream = fs.createReadStream()
+
+
+- We need to specify to node.js which file to read through the stream, using the __dirname property on the global object to get the current directory (public) and then concatenate that with the file name ('/readMe.txt')
+- What is going to happen is node will read the file, a small amount at a time, and store that buffer in the variable myReadStream.
+- example:
+
+var http = require('http');
+var fs = require('fs');
+
+var myReadStream = fs.createReadStream(__dirname + '/readMe.txt');
