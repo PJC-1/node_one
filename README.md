@@ -522,10 +522,86 @@ var myReadStream = fs.createReadStream()
 
 
 - We need to specify to node.js which file to read through the stream, using the __dirname property on the global object to get the current directory (public) and then concatenate that with the file name ('/readMe.txt')
-- What is going to happen is node will read the file, a small amount at a time, and store that buffer in the variable myReadStream.
+- What is going to happen is node will find the data source (file) and then read the file, a small amount at a time, and store that buffer in the variable myReadStream. It will continue this process until the entire file is processed.
 - example:
 
 var http = require('http');
 var fs = require('fs');
 
 var myReadStream = fs.createReadStream(__dirname + '/readMe.txt');
+
+
+- What we can do is recognize when we have received one chunk of data, in other words the first piece that comes back to us.
+- We are able to do this because the createReadStream inherits from the EventEmitter, there is an event called Data on the createReadStream which allows us to listen for when we receive any kind of data from the stream.
+- Next we will set up a listener that will listen for data coming from the stream and fire a function every time we receive something.
+- We use the .on method on our defined myReadStream variable.
+- example:
+
+var http = require('http');
+var fs = require('fs');
+
+var myReadStream = fs.createReadStream(__dirname + '/readMe.txt');
+
+myReadStream.on();
+
+- And pass in the event 'data' and fire back a function every time we receive some data, this data we will label/pass into this function as a chunk.
+- example:
+
+var http = require('http');
+var fs = require('fs');
+
+var myReadStream = fs.createReadStream(__dirname + '/readMe.txt');
+
+myReadStream.on('data', function(chunk){});
+
+
+- What we can do now is log when we receive a chunk of data, in other words when the 'data' event occurs.
+- We can also do another log which logs the actual data, or chunk as we have specified in the callback function.
+- example:
+
+var http = require('http');
+var fs = require('fs');
+
+var myReadStream = fs.createReadStream(__dirname + '/readMe.txt');
+
+myReadStream.on('data', function(chunk){
+    console.log('new chunch received:');
+    console.log(chunk);
+});
+
+- If we run this in the terminal then what we will see is the actual buffer.
+- example output:
+
+Phills-MacBook-Pro:one PJC$ cd public/
+Phills-MacBook-Pro:public PJC$ node app
+new chunch received:
+<Buffer 4c 6f 72 65 6d 20 69 70 73 75 6d 20 64 6f 6c 6f 72 20 73 69 74 20 61 6d 65 74 2c 20 63 6f 6e 73 65 63 74 65 74 75 72 20 61 64 69 70 69 73 63 69 6e 67 ... >
+new chunch received:
+<Buffer 65 6e 74 65 73 71 75 65 20 6a 75 73 74 6f 20 69 70 73 75 6d 2c 20 61 75 63 74 6f 72 20 73 65 64 20 6c 69 62 65 72 6f 20 61 2c 20 73 6f 64 61 6c 65 73 ... >
+Phills-MacBook-Pro:public PJC$
+
+
+- From the output we can see that we received two different chunks from the file.
+- If the file was much larger, then could see even more chunks (buffers).
+- What you can notice is that what is being logged is the actuall buffer instead of the text from the file. That is because in the createReadStream method we did not specify the character encoding.
+- We can enclude the character encoding, utf8 as the second parameter in the createReadStream method.
+- example:
+
+var http = require('http');
+var fs = require('fs');
+
+var myReadStream = fs.createReadStream(__dirname + '/readMe.txt', 'utf8');
+
+myReadStream.on('data', function(chunk){
+    console.log('new chunch received:');
+    console.log(chunk);
+});
+
+- example output:
+
+Phills-MacBook-Pro:public PJC$ node app
+new chunch received:
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sed neque magna. Etiam pharetra tellus non laoreet condimentum.
+
+- Now we that we have specified the utf8 encoding, the lorem ipsum text is displayed in the output.
+- 
