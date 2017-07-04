@@ -479,3 +479,22 @@ var server = http.createServer(function(req,res){
 server.listen(3000, '127.0.0.1');
 
 console.log('You are now listening on port 3000.');
+
+
+Streams and Buffers
+
+Buffers
+
+- Temporary storage spot for a chunk of data that is being transferred from one place to another.
+- The buffer is filled with data, then passed along.
+- Transfer small chunks of data at a time.
+
+Stream
+- A stream of data that flows over time, from one place to another.
+-From the Data Source, transfering small chunks of data until the buffer is filled, then the buffer is passed down the stream to be processed and sent to the client.
+
+- An example of buffers and streams is streaming a movie or video online. The full movie is the complete data source. Instead of waiting a really long time for the entire movie to load we can start watching once the first buffer has been processed for the client.
+
+Streams in Node.js
+- The main idea is that Nodejs can make use of Streams to transfer data.
+- This can increase performance.
