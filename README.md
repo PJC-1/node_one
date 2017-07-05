@@ -604,4 +604,43 @@ new chunch received:
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sed neque magna. Etiam pharetra tellus non laoreet condimentum.
 
 - Now we that we have specified the utf8 encoding, the lorem ipsum text is displayed in the output.
-- 
+
+
+Writable Streams
+
+- Creating a writable streams will enable us to send it to the browser (client) or create a new file with that data.
+- We start by defining a variable myWriteStream and set that to the file system method createWriteStream. Similar the createReadStream, we will pass into the method the __dirname property to get the current directory and then concatenate a new file named writeMe.txt.
+- writeMe.txt will be the location that node will write the data it retrieves from the readMe.txt.
+- example:
+
+var http = require('http');
+var fs = require('fs');
+
+var myReadStream = fs.createReadStream(__dirname + '/readMe.txt', 'utf8');
+var myWriteStream = fs.createWriteStream(__dirname + '/writeMe.txt');
+
+
+
+myReadStream.on('data', function(chunk){
+    console.log('new chunch received:');
+    console.log(chunk);
+});
+
+- What we want to achieve is every time we receive a piece of data, we want to write that to the file writeMe.txt, we can do that by working in the myWriteStram variable into the current read stream (myReadStream) callback function.
+- we can use the write() method and pass in the current chunk of data.
+- example:
+
+var http = require('http');
+var fs = require('fs');
+
+var myReadStream = fs.createReadStream(__dirname + '/readMe.txt', 'utf8');
+var myWriteStream = fs.createWriteStream(__dirname + '/writeMe.txt');
+
+
+myReadStream.on('data', function(chunk){
+    console.log('new chunch received:');
+    myWriteStream.write(chunk);
+});
+
+- When we run node app. Node will go to that location specified in the write stream and create the writeMe.txt. And as the we receive chunks of data the write stream will write that data to the writeMe.txt file.
+- When we have finished, the content of the writeMe.txt file will be identical to the readMe.txt file.
