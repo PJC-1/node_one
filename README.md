@@ -1,6 +1,8 @@
 Learning about node.js by following along The Net Ninja's Node JS Tutorial for Beginners.
 https://www.youtube.com/watch?v=w-7RQ46RgxU&list=PL4cUxeGkcC9gcy9lrvMJ75z9maRw4byYp
 
+ATTENTION: These are just notes I'm taking while following along, If I have time I will come back and polish up the notes with proper markup, but I recommend checking out the tutorial yourself, it's really good!
+
 The global object is available to the user.
 Some examples of what is available with the global object are:
 - console.log
