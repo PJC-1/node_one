@@ -646,3 +646,129 @@ myReadStream.on('data', function(chunk){
 
 - When we run node app. Node will go to that location specified in the write stream and create the writeMe.txt. And as the we receive chunks of data the write stream will write that data to the writeMe.txt file.
 - When we have finished, the content of the writeMe.txt file will be identical to the readMe.txt file.
+
+
+
+
+Pipes
+
+- Node.js gives us a more elegant approach to handle this concept of manually reading a readstream and writing buffers to a writestream with Pipes.
+- A Pipe can help us do the same exact thing, take data from a readstream and then pipe it to a write stream.
+- Instead of having to listen for that data event and writing the data to a writestream, the pipe will do this automatically does that for us.
+- We don't have to manually listen for data events.
+- We don't have to manually write to a writestream.
+- The change will happen in the code where we are manually listening for the data event.
+- Replace the entire event listener with the fs modules pipe method. note: you can only use the pipe() method on readable streams. Because we are piping from a readable stream to a writable stream.
+- example:
+
+var http = require('http');
+var fs = require('fs');
+
+var myReadStream = fs.createReadStream(__dirname + '/readMe.txt', 'utf8');
+var myWriteStream = fs.createWriteStream(__dirname + '/writeMe.txt');
+
+
+myReadStream.pipe()
+
+
+- We pass in the writable stream, in other words we are piping it to the writable stream.
+- example:
+
+var http = require('http');
+var fs = require('fs');
+
+var myReadStream = fs.createReadStream(__dirname + '/readMe.txt', 'utf8');
+var myWriteStream = fs.createWriteStream(__dirname + '/writeMe.txt');
+
+
+myReadStream.pipe(myWriteStream);
+
+
+- From here, if we run node app. It will behave exactly as it did when we were listening to the data event and then writing to the writable stream. The output is identical.
+- What we can do next, is go back to the server that we created and commented out.
+- We are going to use the idea of piping from a readable stream to a writable stream to send data to a user.
+- The last time we created the server we sent back some plain text. What we can do is read from the file and write to the response (which is a writable stream) and send it through the data.
+- We can cut our whole snippet of code with the readstream and write stream and paste that into the server.
+- example:
+
+
+var http = require('http');
+var fs = require('fs');
+
+myReadStream.pipe(myWriteStream);
+
+var server = http.createServer(function(req,res){
+      console.log('request was made: ' + req.url);
+      res.writeHead(200, {'Content-Type': 'text/plain'});
+      var myReadStream = fs.createReadStream(__dirname + '/readMe.txt', 'utf8');
+      var myWriteStream = fs.createWriteStream(__dirname + '/writeMe.txt');
+      myReadStream.pipe(myWriteStream);
+      res.end('Hello world');
+});
+
+server.listen(3000, '127.0.0.1');
+console.log('sanity check on port 3000.');
+
+
+- Currently what is happening in the code, is it is reading from the readstream and writing to the write stream, but that is not what we want to do, we want to send it as a response to the client rather than to a writeMe.txt.
+- We want to send it to the response stream, because the response object is a writable stream which we can write data to. So we can get rid of the myWriteStream variable entirely. And instead of piping it to myWriteStream, we can pipe it to the response stream.
+- example:
+
+
+var http = require('http');
+var fs = require('fs');
+
+myReadStream.pipe(myWriteStream);
+
+var server = http.createServer(function(req,res){
+      console.log('request was made: ' + req.url);
+      res.writeHead(200, {'Content-Type': 'text/plain'});
+      var myReadStream = fs.createReadStream(__dirname + '/readMe.txt', 'utf8');
+      myReadStream.pipe(res);
+      res.end('Hello world');
+});
+
+server.listen(3000, '127.0.0.1');
+console.log('sanity check on port 3000.');
+
+
+- Now we can get rid of the res.end('Hello world') because piping the response is automatically ending the response, it sends data down the stream to the client.
+- example:
+
+
+
+var http = require('http');
+var fs = require('fs');
+
+myReadStream.pipe(myWriteStream);
+
+var server = http.createServer(function(req,res){
+      console.log('request was made: ' + req.url);
+      res.writeHead(200, {'Content-Type': 'text/plain'});
+      var myReadStream = fs.createReadStream(__dirname + '/readMe.txt', 'utf8');
+      myReadStream.pipe(res);
+});
+
+server.listen(3000, '127.0.0.1');
+console.log('sanity check on port 3000.');
+
+- At this point if you run the code by executing node app. You will see the console.log message logged in the terminal.
+- example terminal output:
+
+Phills-MacBook-Pro:public PJC$ node app
+sanity check on port 3000.
+
+
+- It is listening to the server. If we proceed to the browser at 127.0.0.1:3000 (localhost 3000), you will see all of the lorem ipsum text from the readMe.txt file.
+- What we have done now, is sent this data in a stream. Which is much better for performance than reading the whole file as a whole and then sending it as a whole.
+
+Recap of the code's functionality so far:
+- First we create the server.
+- We have the request object and the response object.
+- And the response object is a writable stream, so we can write to it.
+- Then we have a console.log message.
+- Then we have our response headers by saying writeHead.
+- 200 status means that everything is ok.
+- Then we specify the content type which is text/plain because that is what we are reading in the readMe.txt file, it is in plain text.
+- Then we create the readstream, which uses the fs module and creates a readstream from the createReadStream method. And reads the contents of the file specified (readMe.txt), we also specify the utf8 character encoding to get it back in the characters we expect from a text file.
+- Then we have taken that readStream and piped it into the repsonse stream, this is basically doing all of the heavy lifting for us, listening to the data event and whenever we receive data streaming it to the user bit by bit, so they receive data quicker.
