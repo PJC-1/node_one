@@ -772,3 +772,67 @@ Recap of the code's functionality so far:
 - Then we specify the content type which is text/plain because that is what we are reading in the readMe.txt file, it is in plain text.
 - Then we create the readstream, which uses the fs module and creates a readstream from the createReadStream method. And reads the contents of the file specified (readMe.txt), we also specify the utf8 character encoding to get it back in the characters we expect from a text file.
 - Then we have taken that readStream and piped it into the repsonse stream, this is basically doing all of the heavy lifting for us, listening to the data event and whenever we receive data streaming it to the user bit by bit, so they receive data quicker.
+
+
+
+Serving HTML Pages to the Clients
+
+- In a real world project you wouldn't want to send a bunch of lorem ipsum for the user to see. Instead you would most likely want to send an HTML page.
+- First we create a HTML page.
+- example index.html page:
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body{
+                background: skyblue;
+                font-family: verdana;
+                color: #fff;
+                padding: 30px;
+            }
+            h1{
+                font-size: 48px;
+                text-transform: uppercase;
+                leter-spacing: 2px;
+                text-align: center;
+
+            }
+            p{
+                font-size: 16px;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>
+            Welcome to the most awesome website on the net
+        </h1>
+        <p>
+            You won't find a website better anywhere else!
+        </p>
+    </body>
+</html>
+
+
+- First we need to change the content type specified in the response header from 'text/plain' to 'text/html' so that the html page is rendered properly in the browser. If we were to keep the content type as 'text/plain' it would treat the index.html as a text file and all the code would be displayed as unrendered html.
+- We also need to replace the path specified in the createReadStream from the readMe.txt to the index.html.
+- example:
+
+var http = require('http');
+var fs = require('fs');
+
+var server = http.createServer(function(req,res){
+      console.log('request was made: ' + req.url);
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      var myReadStream = fs.createReadStream(__dirname + '/index.html', 'utf8');
+      myReadStream.pipe(res);
+});
+
+server.listen(3000, '127.0.0.1');
+
+console.log('sanity check on port 3000.');
+
+
+- Now if you run node app, and take open up the browser to localhost:3000 you will see the html page that just created, which was read from a readstream and served to the client!
