@@ -905,4 +905,6 @@ console.log('sanity check on port 3000.');
 
 - From here, if you save, run node app, and open it up in the browser and refresh. You will see all of the data returned to us as JSON, a JSON string.
 - If you right-click, inspect, then go to the Network tab. You need to refresh to see the request. If you select the response tab, you will see more tabs that will have different stats about the request.
-- Why would we want to return some JSON you ask? Why would someone request this in a browser? Just imagine, that we had some javascript running on the front end in the browser
+- Why would we want to return some JSON you ask? Why would someone request this in a browser? Just imagine, that we had some javascript running on the front end in the browser, that javascript might make this request to a route on the api and that route returned the JSON.
+- Then we can return that data to the front end javascript so it can do something with that JSON.
+- It could output that JSON to the screen in a particular area. Basically update the view for the user. That would be a typical use case for Serving JSON.
