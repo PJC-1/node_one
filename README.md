@@ -836,3 +836,73 @@ console.log('sanity check on port 3000.');
 
 
 - Now if you run node app, and take open up the browser to localhost:3000 you will see the html page that just created, which was read from a readstream and served to the client!
+
+Serving JSON Data
+
+- What we are going to do is remove the streams, and instead we are just going to send it to the response directly using the end method.
+- The first thing we need to do is change the content type from text/html to application/json because that is what we are sending to the browser.
+- example:
+
+var http = require('http');
+var fs = require('fs');
+
+var server = http.createServer(function(req,res){
+      console.log('request was made: ' + req.url);
+      res.writeHead(200, {'Content-Type': 'application/json'});
+});
+
+server.listen(3000, '127.0.0.1');
+
+console.log('sanity check on port 3000.');
+
+
+- Now lets create an object that we want to send back as JSON.
+- example:
+
+var http = require('http');
+var fs = require('fs');
+
+var server = http.createServer(function(req,res){
+      console.log('request was made: ' + req.url);
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      var myObj = {
+          name : 'Ryu',
+          job : 'Ninja',
+          age : 29
+      };
+
+});
+
+server.listen(3000, '127.0.0.1');
+console.log('sanity check on port 3000.');
+
+
+- Now that we have out object defined. We want to send this object back as JSON to the client.
+- Use the .end() method, as we have see previously, the end method is how we can send data back to the client
+- We cannot just pass in myObj into the end method. The reason for this is because the method .end() expects either a string or a buffer to be passed in as a parameter. And in our case myObj is neither a string or a buffer, it is an object. The solution would be to serialize the object, to convert it to a string and the string has to be in JSON format.
+- We can do that by using JSON.stringify() and pass the myObj into it as an argument, that will convert myObj into a string and it will be in JSON format.
+- example:
+
+
+var http = require('http');
+var fs = require('fs');
+
+var server = http.createServer(function(req,res){
+      console.log('request was made: ' + req.url);
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      var myObj = {
+          name : 'Ryu',
+          job : 'Ninja',
+          age : 29
+      };
+      res.end(JSON.stringify(myObj));
+
+});
+
+server.listen(3000, '127.0.0.1');
+console.log('sanity check on port 3000.');
+
+
+- From here, if you save, run node app, and open it up in the browser and refresh. You will see all of the data returned to us as JSON, a JSON string.
+- If you right-click, inspect, then go to the Network tab. You need to refresh to see the request. If you select the response tab, you will see more tabs that will have different stats about the request.
+- Why would we want to return some JSON you ask? Why would someone request this in a browser? Just imagine, that we had some javascript running on the front end in the browser
