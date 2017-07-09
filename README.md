@@ -1080,3 +1080,17 @@ server.listen(3000, '127.0.0.1');
 console.log('sanity check on port 3000
 
 The Node Package Manager (npm)
+
+- We are going to later use Express, which is a package on node.js that will help us to build web applications on node. But in order to use Express, you need to understand how to use the node package manager (npm).
+- Comes with node.js when it was first installed on your machine. It's basically a bunch of command line tools which will help us install third party packages or modules to help out with our node projects. Express is one of these packages and there are many more. It is a huge ecosystem of third party packages, which is one of the reasons why node.js is so great.
+- A node package/module is essentially a bunch of code that someone else wrote and helps us perform a certain type of task within our node.js applications. Express for example can help us with routing, templating, and such. So the idea is that we can load these packages up into our node application and use that functionality in our code, and the way we do that is through the node package manager. Using the package manager we can install packages, update packages, or even publish our own packages for other people to use as well.
+- https://www.npmjs.com will have all the information you need about the packages available.
+- and example of installing a package:
+
+npm install Express
+
+- This would download all files in your node application.
+- When installing, it will also install all the dependencies that the main package relies on.
+- you can also use this command to uninstall the express package:
+
+npm uninstall Express
