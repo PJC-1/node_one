@@ -908,3 +908,173 @@ console.log('sanity check on port 3000.');
 - Why would we want to return some JSON you ask? Why would someone request this in a browser? Just imagine, that we had some javascript running on the front end in the browser, that javascript might make this request to a route on the api and that route returned the JSON.
 - Then we can return that data to the front end javascript so it can do something with that JSON.
 - It could output that JSON to the screen in a particular area. Basically update the view for the user. That would be a typical use case for Serving JSON.
+
+Basic Routing
+- Lets set up some basic routing.
+- Currently as we have it set up, when we run node app and proceed to 127.0.0.1:3000 in the browser. We will see the JSON displayed.
+- Even if we were to 127.0.0.1:3000/home we would still see the same JSON display. No matter what request is made the same data is displayed.
+- In a real world application, we would want to distinguish between different urls and send data depending what request is being made. As an example, is we go to 127.0.0.1:3000/home we would want to be served the index page. Or in another case if we go to 127.0.0.1:3000/api we would want to send the user some data maybe.
+- We need to create some sort of routing system in node.js.
+- If you notice when we are making a request to the server, we log what request is being made with this line:
+
+
+console.log('request was made: ' + req.url);
+
+- To find what request is being made we are accessing a property on the request object called url. We are listening to what the user is writing to the address bar and so we know what they are requesting.
+- Therefore we can use this to check what they have requested and then send them data depending on that request.
+- We can use an if statement to check what the user's request is and then send them something depending on that request.
+- As a note it is a good habit to get use to using the === comparative operator.
+- We can crate a condition that is true when the url property of the request object is equal to '/home' or if that same request object is equal to '/'.
+- example:
+
+
+var http = require('http');
+var fs = require('fs');
+
+var server = http.createServer(function(req,res){
+      console.log('request was made: ' + req.url);
+      if(req.url === '/home' || req.url === '/'){
+
+      }
+});
+
+server.listen(3000, '127.0.0.1');
+console.log('sanity check on port 3000.');
+
+
+- So if the condition is met the inside we can create the response header.
+- Use the writeHead method and pass into a status of 200, a content type of 'text/html' because we are sending a html page.
+- Next we need to create a readstream to be able to read the file.
+- We will use the fs module and the createReadStream method, and pass in the __dirname since the file we want to read is in the current directory and concatenate that with '/index.html'
+- Now we need to pipe that to the response object, which is a writable stream.
+- From here is we run now app and proceed to 127.0.0.1:3000 it will display the index.html page.
+- Both 127.0.0.1:3000 and 127.0.0.1:3000/home will display the same index.html page, but if the user tries to go to a url other than '/' or '/home' then the page will load infinitely trying to find that page.
+- example:
+
+var http = require('http');
+var fs = require('fs');
+
+var server = http.createServer(function(req,res){
+      console.log('request was made: ' + req.url);
+      if(req.url === '/home' || req.url === '/'){
+          res.writeHead(200, {'Content-Type': 'text/html'});
+          fs.createReadStream(__dirname + '/index.html').pipe(res);
+      }
+});
+
+server.listen(3000, '127.0.0.1');
+console.log('sanity check on port 3000.');
+
+
+
+- What we can do now is add some more routes.
+- We can extend the current if statement with an else if statement
+- In the else if condition lets add some logic that is true when the url property is equal to '/contact', where we would send back a contact page.
+- We can create the contact.html page similar to the index.html page.
+- example:
+
+var http = require('http');
+var fs = require('fs');
+
+var server = http.createServer(function(req,res){
+      console.log('request was made: ' + req.url);
+      if(req.url === '/home' || req.url === '/'){
+          res.writeHead(200, {'Content-Type': 'text/html'});
+          fs.createReadStream(__dirname + '/index.html').pipe(res);
+      } else if(req.url === '/contact'){
+          res.writeHead(200, {'Content-Type': 'text/html'});
+          fs.createReadStream(__dirname + '/contact.html').pipe(res);
+      }
+});
+
+server.listen(3000, '127.0.0.1');
+console.log('sanity check on port 3000.');
+
+- Now that we contact.html page and the route defined to handle the request to '/contacts' if we run node app, and request the url 127.0.0.1:3000/contact then we will see the contact page displayed in the browser.
+- What if we want to send back JSON instead? Like some kind of API endpoint, well we can do that as well.
+- Use the else if to continue the if else statement. Set the else if condition to check if the request object's url property is equal to '/api/ninjas', if this condition is met, then we want to send back some data, this is like some API endpoint that some javascript in the browser might request.
+- Lets first create an array of objects.
+- As a note, for the sake of this example we are creating the array of objects right in the else if executable code, in a real world application you would probably get this data from a database rather than just defining it here.
+- example:
+
+var http = require('http');
+var fs = require('fs');
+
+var server = http.createServer(function(req,res){
+      console.log('request was made: ' + req.url);
+      if(req.url === '/home' || req.url === '/'){
+          res.writeHead(200, {'Content-Type': 'text/html'});
+          fs.createReadStream(__dirname + '/index.html').pipe(res);
+      } else if(req.url === '/contact'){
+          res.writeHead(200, {'Content-Type': 'text/html'});
+          fs.createReadStream(__dirname + '/contact.html').pipe(res);
+      } else if (req.url === '/api/ninjas'){
+          var ninjas = [{name: 'ryu', age: 29,}, {name: 'yoshi', age: 32}];
+      }
+});
+
+server.listen(3000, '127.0.0.1');
+console.log('sanity check on port 3000.');
+
+
+- We are going to send this data as JSON to the browser (client).
+- To get this started we need to create the response header, and pass in a status of 200 and the content type this time will be 'application/json'.
+- Then we need to send that to the browser, lets use the response's end method, and pass into it the variable ninjas which has our data in it. But as we did a little while ago we need to convert out data into a string since the response object will expect either a buffer or a string.
+- So we can use JSON.stringify to convert our data into a string.
+- example:
+
+var http = require('http');
+var fs = require('fs');
+
+var server = http.createServer(function(req,res){
+      console.log('request was made: ' + req.url);
+      if(req.url === '/home' || req.url === '/'){
+          res.writeHead(200, {'Content-Type': 'text/html'});
+          fs.createReadStream(__dirname + '/index.html').pipe(res);
+      } else if(req.url === '/contact'){
+          res.writeHead(200, {'Content-Type': 'text/html'});
+          fs.createReadStream(__dirname + '/contact.html').pipe(res);
+      } else if (req.url === '/api/ninjas'){
+          var ninjas = [{name: 'ryu', age: 29,}, {name: 'yoshi', age: 32}];
+          res.writeHead(200, {'Content-Type': 'application/json'});
+          res.end(JSON.stringify(ninjas));
+      }
+});
+
+server.listen(3000, '127.0.0.1');
+console.log('sanity check on port 3000.');
+
+
+- Now if you save and run app node. If we proceed to 127.0.0.1:3000/api/ninjas then we will see the JSON data displayed in the browser.
+- So far we set up a few routes, but if we go to something that is not specifically set up in the app.js, then we will still get an infinitely loading browser.
+- A solution to this would be to send some type of 404 page, to explain to the user that we have not found the page they are requesting.
+- At the end of all the routes so far, we will create a catch all. It will not be an else if but rather just an else. Which will send a 404 page if the user requests a url that is not define.
+- It will look similar to setting up the other html pages. Make sure the content type is 'text/html' and be sure to pass in the url.
+- Be sure to change the response header's status in this case to 404.
+- Create the 404.html page.
+- This will be a catch all if none of our routes match when the user requests something.
+- example:
+
+var http = require('http');
+var fs = require('fs');
+
+var server = http.createServer(function(req,res){
+      console.log('request was made: ' + req.url);
+      if(req.url === '/home' || req.url === '/'){
+          res.writeHead(200, {'Content-Type': 'text/html'});
+          fs.createReadStream(__dirname + '/index.html').pipe(res);
+      } else if(req.url === '/contact'){
+          res.writeHead(200, {'Content-Type': 'text/html'});
+          fs.createReadStream(__dirname + '/contact.html').pipe(res);
+      } else if (req.url === '/api/ninjas'){
+          var ninjas = [{name: 'ryu', age: 29,}, {name: 'yoshi', age: 32}];
+          res.writeHead(200, {'Content-Type': 'application/json'});
+          res.end(JSON.stringify(ninjas));
+      } else {
+          res.writeHead(200, {'Content-Type': 'text/html'});
+          fs.createReadStream(__dirname + '/404.html').pipe(res);
+      }
+});
+
+server.listen(3000, '127.0.0.1');
+console.log('sanity check on port 3000.');
