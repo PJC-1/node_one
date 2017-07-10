@@ -1094,3 +1094,28 @@ npm install Express
 - you can also use this command to uninstall the express package:
 
 npm uninstall Express
+
+
+The package.json file
+
+- It is always a good idea to keep track of what packages you are installing and which packages you application depends on, the dependencies of you application.
+- In node.js we can do that, we can use the package.json file to keep of all those packages that we depend on.
+- We can either create this manually ourselves or we can use a command in node.js to do it for us.
+- running npm init, it will ask you a series of questions about our project, after answering all the questions it will have created the package.json file for our application. In this file is information, that we entered about the application.
+- A great feature of the package.json file is that it can keep track of the dependencies, the package that we need to run this application.
+- For example if we install some packages and our application depends on those, now if we pass our applications code to another developer, we do not normally pass on the packages as well, only the application code that we have written. So for that developer to run our application, they are going to have to install the same packages that we did, the packages that our application depends on. So how do they know which packages need to be installed? They will be in the package.json file. How do we add the packges to this file and how to we keep track of it? When we install a package in node.js using the node package manager we can pass through a save flag and that is going to save that package as a dependency in the package.json file.
+- example:
+
+npm install express -save
+
+- This command will both install express and save this as a dependency in your package.json file.
+- example snippet from the package.json of the dependencies:
+
+"dependencies": {
+  "express": "^4.15.3"
+}
+
+- You notice that it will provide the name of the package and the version number as well.
+- If you were to run npm uninstall express. This would remove all of those file in the node_modules directory.
+- You will notice that once express is uninstalled, in the package.json file express will still be listed as a dependency, even through the node_modules directory is empty. The reason for this is because even through we do not have express installed we have listed it as a dependency, which tells node that we need this package for our application to work. To unlist a package as a dependency you can manually delete that line from the dependencies.
+- One cool feature of the package.json file is let say we had several packages listed in the package.json file as dependencies and we passed our code to another developer, with the npm install command will automatically install all the packages your application lists as a dependency, it is also version specific, so it will install the exact version specificed in the package.json. 
