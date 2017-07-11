@@ -1118,4 +1118,55 @@ npm install express -save
 - You notice that it will provide the name of the package and the version number as well.
 - If you were to run npm uninstall express. This would remove all of those file in the node_modules directory.
 - You will notice that once express is uninstalled, in the package.json file express will still be listed as a dependency, even through the node_modules directory is empty. The reason for this is because even through we do not have express installed we have listed it as a dependency, which tells node that we need this package for our application to work. To unlist a package as a dependency you can manually delete that line from the dependencies.
-- One cool feature of the package.json file is let say we had several packages listed in the package.json file as dependencies and we passed our code to another developer, with the npm install command will automatically install all the packages your application lists as a dependency, it is also version specific, so it will install the exact version specificed in the package.json. 
+- One cool feature of the package.json file is let say we had several packages listed in the package.json file as dependencies and we passed our code to another developer, with the npm install command will automatically install all the packages your application lists as a dependency, it is also version specific, so it will install the exact version specificed in the package.json.
+
+
+Nodemon
+
+- https://www.npmjs.com/package/nodemon
+- Nodemon is a package for when your developing. What it does is it monitors you application files so that when it's running in the browser and listening to the server, if we make a change in one of the application files like app.js then it will monitor that, and when we save that file it restarts the server automatically for us. So you don't have to go back and forth with the terminal to start, stop, and restart the server, we are instead able to simply restart in the browser and we are going to get that fresh change that was made in the application file.
+- You can use this comman to install nodemon:
+
+npm install -g nodemon
+
+- Notice that we use the -g option, this indicates that we are installing nodemon globally instead of locally. Which means that no matter what application we work on we can use nodemon.
+- As a note when we install nodemon with this option, we will not see the files added in the node_modules directory, instead they will be downloaded in another location somewhere on you computer.
+- The way this works, is instead of running node app to run our application, instead we will run our application by running this command:
+
+nodemon app.js
+
+- After it is run it will output several message to the terminal.
+- the nodemon version number, it gives you the 'rs' command which will restart the node server, it is telling you that nodemon is watching all the files which is represented by this syntax *.*, and it logs that it has started 'node app.js', and then it will begin starting the server's processes and listening to the port.
+- So nodemon is watching all the files, and if we make a change, then it will update it for us.
+- If we proceed to local host now, because we have some routes set up from earlier, we will get the home page if we go to 127.0.0.1:3000, basically the same behavior as we had it when we had defined these routes.
+_ But if we now go back to the app.js and make a change to one of the routes, lets say we change the url condition for 'contact' to 'contact-us'. If we save the file, you will see in the terminal nodemon logging a message which states "restarting due to changes..." and then "starting 'node app.js'". So going to the browser to 127.0.0.1:3000/contact-us will bring up the contact page as it is newly define in our routes to do so.
+- example:
+
+
+var http = require('http');
+var fs = require('fs');
+
+var server = http.createServer(function(req,res){
+      console.log('request was made: ' + req.url);
+      if(req.url === '/home' || req.url === '/'){
+          res.writeHead(200, {'Content-Type': 'text/html'});
+          fs.createReadStream(__dirname + '/index.html').pipe(res);
+      } else if(req.url === '/contact-us'){
+          res.writeHead(200, {'Content-Type': 'text/html'});
+          fs.createReadStream(__dirname + '/contact.html').pipe(res);
+      } else if (req.url === '/api/ninjas'){
+          var ninjas = [{name: 'ryu', age: 29,}, {name: 'yoshi', age: 32}];
+          res.writeHead(200, {'Content-Type': 'application/json'});
+          res.end(JSON.stringify(ninjas));
+      } else {
+          res.writeHead(200, {'Content-Type': 'text/html'});
+          fs.createReadStream(__dirname + '/404.html').pipe(res);
+      }
+});
+
+server.listen(3000, '127.0.0.1');
+console.log('sanity check on port 3000.');
+
+
+
+- This is a much better way of working with node.js, it saves a lot of time not having to deal with restarting the server.
