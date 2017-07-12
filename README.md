@@ -1170,3 +1170,86 @@ console.log('sanity check on port 3000.');
 
 
 - This is a much better way of working with node.js, it saves a lot of time not having to deal with restarting the server.
+
+
+
+Introduction to Express
+
+- Express is one of the most popular node packages on the internet.
+- It has an easy and flexible routing system.
+- It integrates with many templatingh engines.
+- It Contains a middleware framework.
+- Lets start fresh by going into the app.js and delete its content. We will be building a brand new node app with express.
+- First you would install the express package into your app. by using the command:
+npm install express
+- You can also add the -save option if you wanted to save express to your devDependencies in the package.json.
+- Once you have installed it express will be present in your node_modules directory.
+- The first thing we need to do is require express.
+- example:
+
+var express = require('express');
+- Setting the express variable will give us access to the express module.
+
+- To gain access to all of the functionality of express in our application we need to set up what is known as an express app.
+- Store it in a variable, in most cases people will call this variable app. We set this variable to express and then fire as a function.
+- example:
+
+var express = require('express');
+
+var app = express();
+
+- The reason for this is because what is returned to us is the module.exports is a function, when we fire that function we then have access to all of those different methods on express, which will help us with things such as routing or setting up templating engines.
+- We also need to listen to a port. Much like we did before.
+- example:
+
+var express = require('express');
+
+var app = express();
+
+app.listen(3000);
+
+- We have our express app running with the second line and in our thrid line we are listing to the port. But how do we respond to requests?
+- When we set up the app variable, we are given access to a variety of methods that can help us respond to requests.
+- And these methods all correspond to the types of requests being made they are what is known as http verbs or methods.
+- HTTP verbs are the type of requests we make.
+- GET: When we type a url into an address bar
+- POST: Generally made when we post some data to a server from a web form.
+- DELETE:
+- PUT:
+- These are all different HTTP methods. They are the types of requests we make.
+- There is nothing really that special about these different requests methods, they are just requests working in the same way as each other. It's just that each different type of request contains a specific piece of information attached to it to say to the server what kind of request it is. Then it's up to the server to look at what type of request it is and then treat that type of request in a particular way however it sees fit.
+- So by using express in node we can respond to each of these different types of requests very easily.
+- The way we do that is by using the methods that express provides us with. So to respond to a get request, we use the app.get method and we pass in the route and a function separated by a coma.
+- example:
+
+GET - app.get('route',fn)
+POST - app.post('route',fn)
+DELETE - app.delete('route',fn)
+
+- For now we will stick to get requests since that is what we've been working on.
+- A get request is typing a URL in an address bar and then getting something back from the server.
+- So back to our app.js, we are listening to a port.
+- We want to respond to a get requests and we have seen that we can do that by doing app.get
+- The first argument for the get() method is the route in single quotes. For now we can just do '/'.
+- And then we need to fire a function as our second argument, for when a user requests the route (root directory).
+- The function take the request and response object. The only difference is that express has extended these objects and has added additional functionality to them. So when a user goes to forward-slash, it will fire the function and we can respond to it in a particular way. for now we can just send a string.
+- example:
+
+var express = require('express');
+
+var app = express();
+
+app.get('/', function(req, res){
+    res.send('this is the homepage.');
+});
+
+app.listen(3000);
+
+
+- So now if we run this (now is a good opportunity to use nodemon). with this command:
+
+nodemon app.js
+
+- Viewing a browser at 127.0.0.1:3000/, then we will get the homepage or at least the string we set to say 'this is the homepage'.
+- What is happening is express is listening for the get request, when it receives that request it will fire this function and on the response object it is saying .send, which is an express method, and finally we are send a string. You will notice that are not specifying the content-type in the headers? Express is cleaver enough to figure out what it is and do it for us.
+- Setting up another route, and this time change the route to '/contact' and change the string to 'this is the contact page'. If we save that and proceed to /contact we will get the string we just wrote for contact displayed in the browser.
