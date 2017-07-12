@@ -1,23 +1,5 @@
-var http = require('http');
-var fs = require('fs');
+var express = require('express');
 
-var server = http.createServer(function(req,res){
-      console.log('request was made: ' + req.url);
-      if(req.url === '/home' || req.url === '/'){
-          res.writeHead(200, {'Content-Type': 'text/html'});
-          fs.createReadStream(__dirname + '/index.html').pipe(res);
-      } else if(req.url === '/contact-us'){
-          res.writeHead(200, {'Content-Type': 'text/html'});
-          fs.createReadStream(__dirname + '/contact.html').pipe(res);
-      } else if (req.url === '/api/ninjas'){
-          var ninjas = [{name: 'ryu', age: 29,}, {name: 'yoshi', age: 32}];
-          res.writeHead(200, {'Content-Type': 'application/json'});
-          res.end(JSON.stringify(ninjas));
-      } else {
-          res.writeHead(200, {'Content-Type': 'text/html'});
-          fs.createReadStream(__dirname + '/404.html').pipe(res);
-      }
-});
+var app = express();
 
-server.listen(3000, '127.0.0.1');
-console.log('sanity check on port 3000.');
+app.listen(3000);
