@@ -1262,3 +1262,55 @@ Express Route Params
 - I wouldn't want create a separate method for each ID and respond to each ID separately. I want to recognize when someone is requesting that profile page and then grab that ID from the url, so I can do something with it. We can do that by using route variables or also known as route parameters.
 - So lets go ahead and create another get method that is going to respond to a particular request. In this example we will use a get request, app.get().
 - We want to pass in the path which will be '/profile' because we want to view a profile and then the id of the profile, which we will use this syntax '/profile/:id'. An example of an individual profile would be 127.0.0.1:3000/profile/123, where 123 would correspond to a particular person in a database, so we can make some sort of database query and then return that data from the database and inject it into our HTML and return that to the user. (query the database with a route parameter)
+- We will next fire a function, which again will take the request object and response object. Within the code block in the function we can access the user id that the user input, on the request object.
+- For now what we are going to do is use the send method with the response object and send some text back to the user.
+- example:
+
+var app = express();
+
+app.get('/', function(req, res){
+    res.send('this is the homepage');
+})
+
+app.get('/', function(req, res){
+    res.send('this is the contact page');
+});
+
+app.get('/profile/:id', function(req, res){
+    res.send('You requested to see a profile with the id of ');
+});
+
+app.listen(3000);
+
+- Then we are going to concatenate with the ID from the URL, but how do we access it? We will access it through the request object. The property on the request object is params, then we just need to state the parameter name which is .id, the example snippet for the res.send() would look like this:
+
+app.get('/profile/:id', function(req, res){
+    req.send('You requested to see a profile with the id of ' + req.params.id);
+});
+
+
+- So from here, if we run node app.js, and proceed to 127.0.0.1:3000/profile/123, we would be served a page that displays the text "You requested to see profile with the id of 123". And if you use a different ID in the URL, then you would see that ID printed accordingly.
+
+- We have successfully accessed the ID variable or parameter we have passed through on our request. by using req.parameters.id.
+- Because this dynamic we can now say anything we want to in the place of :id, lets say :name, then we make the change to how we are accessing the parameter by saying req.params.name and edit the send sting to say name instead of id just to make our statement to the user make sense. Save and enter a URL such as 127.0.0.1:3000/profile/jordy, and the browser will display "You requested to see a profile with the name of jordy".
+- So what we have here is a really cool way to set up routes when we are dealing with dynamic routes that may change. But we have this same sort of structure where that all "profiles" (to look for when "profile" is in the url), then forward-slash something and then bring me back that something on the params and we can do something with that something with it, maybe query it against a database and return some data dependent on it.
+
+- example snippet:
+
+var express = require('express');
+
+var app = express();
+
+app.get('/', function(req,res){
+    res.send('this is the homepage');
+});
+
+app.get('/contact', function(req, res){
+    res.send('this is the contact page');
+});
+
+app.get('/profile/:name'){
+  res.send('You requested to see a profile with the name of ' + req.params.name);
+};
+
+app.listen(3000);
