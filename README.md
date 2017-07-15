@@ -1253,3 +1253,12 @@ nodemon app.js
 - Viewing a browser at 127.0.0.1:3000/, then we will get the homepage or at least the string we set to say 'this is the homepage'.
 - What is happening is express is listening for the get request, when it receives that request it will fire this function and on the response object it is saying .send, which is an express method, and finally we are send a string. You will notice that are not specifying the content-type in the headers? Express is cleaver enough to figure out what it is and do it for us.
 - Setting up another route, and this time change the route to '/contact' and change the string to 'this is the contact page'. If we save that and proceed to /contact we will get the string we just wrote for contact displayed in the browser.
+
+
+
+Express Route Params
+
+- Route parameters in express. So far we have set up our express app and it is responding to some get requests, but thats about it. We are only responding to sort of static requests, "/contact" or "/about". But what if we want to some kind of dynamic request? For example say we had a social network site and one particular route would be "/profile/ + the id of the specific profile".
+- I wouldn't want create a separate method for each ID and respond to each ID separately. I want to recognize when someone is requesting that profile page and then grab that ID from the url, so I can do something with it. We can do that by using route variables or also known as route parameters.
+- So lets go ahead and create another get method that is going to respond to a particular request. In this example we will use a get request, app.get().
+- We want to pass in the path which will be '/profile' because we want to view a profile and then the id of the profile, which we will use this syntax '/profile/:id'. An example of an individual profile would be 127.0.0.1:3000/profile/123, where 123 would correspond to a particular person in a database, so we can make some sort of database query and then return that data from the database and inject it into our HTML and return that to the user. (query the database with a route parameter)
