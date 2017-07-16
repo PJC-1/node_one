@@ -13,7 +13,8 @@ app.get('/contact', function(req, res){
 });
 
 app.get('/profile/:name', function(req,res){
-    res.render('profile', {person: req.params.name});
+    var data = {age: 29, job: 'ninja'};
+    res.render('profile', {person: req.params.name, data: data});
 });
 
 app.listen(3000);
