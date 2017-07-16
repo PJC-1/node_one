@@ -1314,3 +1314,62 @@ app.get('/profile/:name'){
 };
 
 app.listen(3000);
+
+
+
+Template engines
+
+- So far we have been only sending back string (example: "this is the homepage") and a dynamic string with the parameters of the name that is included in the url (example: 'You are have requested to see a profile with the name of ' + req.params.name), but what if we want to send back an html page? Well we can do that by sendFile() method and pass in the absolute path to the file. We will use __dirname to get the directory of the current file and concatenate that with the file name we want to send.
+- example snippet:
+
+app.get('/', function(req, res){
+    res.sendFile(__dirname + '/index.html');
+});
+
+- We can do the samething for the contact page.
+- example snippet:
+
+app.get('/contact', function(req, res){
+    res.sendFile(__dirname + '/contact.html');
+});
+
+- From this point, if we run it by executing the command: nodemon app.js. If we proceed to 127.0.0.1:3000/ in the browser we should see the index.html page displayed. And we should also receive the contacts page if we go to the URL 127.0.0.1:3000/contacts.
+- But what if we want to inject some dynamic content into these pages? For example, some data from a database? As an example, with a route '/profile/:name' (where name is dynamic and would be whatever the user specifies as name) we would display the profile for that person, now we can pop the name in there as a string, but what if we want to send an html page, with the url name parameter, and some other information about that person? Currently as it stands, if I go to anything with the url '/profile/:name' You will only get the string "You are viewing the profile of (The name specified in the url parameter)". What we want to do is inject some dynamic content into this. And that is where template engines come into play.
+- With a javascript template engine what we can do is embed data and javascript code into our html files.
+- So we can then inject this dynamic content into the file which we return to the client or browser. And there is a variety of different engines that we can use with express such as: jade or mustache. We are going to take a look at one called EJS, which is a lightweight templating engine. That will make it really easy to get started with.  
+- For more information on how to use EJS, which is the client-side templating engine we will use for this example application, at this link:
+
+http://www.embeddedjs.com/
+
+Some basic functionality of EJS includes:
+- Whenever we want to output some data we use the '%' signs. Similar to ERB from ruby, javascript between '<% %>' is executed. JavaScript between '<%= %>' adds HTML to the result.
+
+- The first thing to do is install EJS in our application. EJS is a package, so we will use the node package manager to install it. If you want to install EJS and save if as a dependency then you would use this command:
+
+npm install ejs -save
+
+- After you press enter, npm will go out and grab EJS to install it into your application.
+- After it is completely isntalled, then you can now use EJS in your application. So how does this all work?
+- Well the very first thing we need to do is tell express that we want to use EJS as our view engine or a template engine.
+- The way we do that is by using the var app = express();, and then using the set method to set the view engine.
+- Pass in the parameter to say what exactly we want to set, in this case it would be the 'view engine' and separated by a coma what view engine we want to use, in this example that would be 'ejs'.
+- example:
+
+var express = require('express');
+var app = express();
+
+app.set('view engine', 'ejs');
+
+app.get('/', function(req,res){
+    res.sendFile(__dirname + '/index.html');
+});
+
+app.get('/contact', function(req, res){
+    res.sendFile(__dirname + '/contact.html');
+});
+
+app.get('/profile/:name', function(req, res){
+    res.send('You are viewing the profile of ' + req.param.name);
+});
+
+app.listen(3000);
