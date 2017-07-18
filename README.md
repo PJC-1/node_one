@@ -1373,3 +1373,111 @@ app.get('/profile/:name', function(req, res){
 });
 
 app.listen(3000);
+
+
+- So now we have our profile view up and running. And we output some data using that some ejs syntax.
+- There many other things we can do with the templating engine. It does not only have to be data that we can output, but we can output actual javascript code. Control flow statements, that sort of thing.
+- What we are going to do is pass through more data. Into the data object. Which is then passed to the view, then cycle through that data and output that as well.
+- So we can add some hobbies to the data object. example:
+
+
+var express = require('express');
+
+var app = express();
+
+app.set('view engine', 'ejs');
+
+app.get('/', function(req,res){
+    res.sendFile(__dirname + '/index.html');
+});
+
+app.get('/contact', function(req, res){
+    res.sendFile(__dirname + '/contact.html');
+});
+
+app.get('/profile/:name', function(req, res){
+    var data = {age: 29, job: 'ninja', hobbie: ['eating', 'fighting', 'fishing']};
+    res.render('profile', {person: req.params.name, data: data});
+});
+
+- So we are basically just creating some data for us to use as an example to pass into the render function which will make the data variable available in the view.
+- We are not going to be outputting a single variable, but rather an entire array. So we need to cycle through that data.
+- We'll start with a <ul> tag and cycle through the data such that each list item will be an outputted item in the array.
+- Using the "<% %>" ejs syntax we can use the data object and access the hobbies key. exmaple:
+
+<ul>
+    <% data.hobbies %>
+</ul>
+
+- And because hobbies is an array, we can use the .forEach() method to iterate over each item in the array. It will fire a callback function where we pass through item which will represent each item in the array. Important to note that we need to close the tag with the '%>' right before the executable code block and the same needs to be done for the ending portion of that code (reference the example for details). The reason for this is because the ejs needs to be properly opened and closed so that we can insert the HTML. example:
+
+<ul>
+    <% data.hobbies.forEach(function(item){ %>
+
+    <% }); %>
+</ul>
+
+- Now we can output an <li> in HTML, and what we want to output is the 'item' passed into the callback function. To output data you need to use the ejs syntax '<%= %>'. example:
+
+<ul>
+    <% data.hobbies.forEach(function(item){ %>
+        <li><%= item %></li>
+    <% }); %>
+</ul>
+
+
+- Here is the complete snippet of the profile.ejs view, exmaple:
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body{
+                background: skyblue;
+                font-family: verdana;
+                color: #fff;
+                padding: 30px;
+            }
+            h1{
+                font-size: 48px;
+                text-transform: uppercase;
+                leter-spacing: 2px;
+                text-align: center;
+
+            }
+            h2{
+                font-size: 30px;
+                text-transform: uppercase;
+                leter-spacing: 2px;
+                text-align: center;
+
+            }
+            p, li{
+                font-size: 16px;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>
+            Welcome to the profile of <%= person %>
+        </h1>
+        <p>
+            <strong>Age: </strong><%= data.age %>
+        </p>
+        <p>
+            <strong>Job: </strong><%= data.job %>
+        </p>
+        <h2>
+            hobbies
+        </h2>
+        <ul>
+            <% data.hobbies.forEach(function(item){ %>
+                <li><%= item %></li>
+            <% }); %>
+        </ul>
+    </body>
+</html>
+
+
+- Opening it in the browser by running nodemon app.js, we will be served the profile.ejs view when we proceed to a url that includes '/profiles/:name'. We've out to data to the view with javascript with the help of some ejs tags.
