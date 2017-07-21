@@ -1481,3 +1481,5 @@ app.get('/profile/:name', function(req, res){
 
 
 - Opening it in the browser by running nodemon app.js, we will be served the profile.ejs view when we proceed to a url that includes '/profiles/:name'. We've out to data to the view with javascript with the help of some ejs tags.
+
+Partial Templates
