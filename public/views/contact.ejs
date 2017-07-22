@@ -29,7 +29,7 @@
         <p>
             Evenything you need to know to get in contact with me!
         </p>
-        <form id="contact-form">
+        <form id="contact-form" method="POST" action="/contact">
             <label for="who">Who do you want to contact?</label>
             <input type="text" name="who" value="<%= qs.person %>">
             <label for="department">Which department?</label>
